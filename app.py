@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from redsql import db, RedisInfo
 import config
 
@@ -12,10 +12,31 @@ def index():
     return "Hello World!"
 
 
+@app.route('/api')
+def api():
+    dataset = RedisInfo.query.all()
+    r = []
+    for data in dataset:
+        d = {
+            "ip": data.ip,
+            "host": data.host,
+            "port": data.port,
+            "description": data.description,
+            "operator": data.operator,
+            "work": data.work
+        }
+        print(d)
+        r.append(d)
+    res = {
+        "status": "success",
+        "totals": len(r),
+        "data": r
+    }
+    return res
+
+
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
-        redis1 = RedisInfo(ip="10.89.141.140", host="oa-nginx-1", port=7980, description="first instance", work=True)
-        db.session.add(redis1)
-        db.session.commit()
+    # with app.app_context():
+    #     redis1 = RedisInfo()
+    #     redis1.query.all()
     app.run(debug=True)

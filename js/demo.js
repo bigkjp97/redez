@@ -264,71 +264,44 @@ const gridManagerName = "test",
                 rowRenderHandler: (e, t) => (92 === e.id && (e.gm_checkbox_disabled = !0, e.gm_row_class_name = "test-row-class"), e),
                 emptyTemplate: e => `<div style="text-align: center;">${e.query.title ? "搜索为空" : "暂无数据"}</div>`,
                 columnData: [{
-                    key: "pic",
-                    remind: {text: "这一列显示了缩略图，可以通过点击跳转至对应的博客地址", style: {color: "yellow"}},
-                    width: "110px",
-                    align: "center",
-                    text: "缩略图",
-                    disableMoveRow: !0,
-                    template: function (e, t) {
-                        var a = document.createElement("a");
-                        a.setAttribute("href", `https://www.lovejavascript.com/#!zone/blog/content.html?id=${t.id}`), a.setAttribute("title", t.title), a.setAttribute("target", "_blank"), a.title = `点击阅读[${t.title}]`, a.style.display = "block", a.style.height = "58.5px";
-                        var n = document.createElement("img");
-                        return n.style.width = "90px", n.style.margin = "0 auto", n.alt = t.title, n.src = `https://www.lovejavascript.com/${e}`, a.appendChild(n), a
-                    }
+                    key: "host",
+                    text: "主机名",
+                    width: "150px"
                 }, {
-                    key: "title",
-                    remind: "the title",
-                    text: "标题",
-                    sorting: "",
+                    key: "IP",
+                    remind: "ip地址",
+                    text: "IP",
+                    merge: "text",
+                    // sorting: "",
                     disableMoveRow: !0,
                     template: function (e, t) {
                         var a = document.createElement("a");
                         return a.setAttribute("href", `https://www.lovejavascript.com/#!zone/blog/content.html?id=${t.id}`), a.setAttribute("title", e), a.setAttribute("target", "_blank"), a.innerText = e, a.title = `点击阅读[${t.title}]`, a.classList.add("plugin-action"), a
                     }
-                }, {key: "readNumber", text: "阅读量"}, {
-                    key: "type",
-                    remind: {
-                        text: "[HTML/CSS, nodeJS, javaScript, 前端鸡汤, PM Coffee, 前端框架, 前端相关]",
-                        style: {width: "300px", "text-align": "left"}
-                    },
-                    text: "博文分类",
+                }, {
+                    key: "port",
+                    text: "端口",
                     align: "left",
-                    width: "150px",
-                    sorting: "",
-                    disableMoveRow: !0,
-                    filter: {
-                        option: [{value: "1", text: "HTML/CSS"}, {value: "2", text: "nodeJS"}, {
-                            value: "3",
-                            text: "javaScript"
-                        }, {value: "4", text: "前端鸡汤"}, {value: "5", text: "PM Coffee"}, {
-                            value: "6",
-                            text: "前端框架"
-                        }, {value: "7", text: "前端相关"}], selected: "3", isMultiple: !1
-                    },
-                    template: function (e, t) {
-                        return TYPE_MAP[e]
-                    }
-                }, {key: "info", remind: "the info", width: "100px", text: "简介", disableMoveRow: !0}, {
-                    key: "username",
-                    remind: "the username",
+                    width: "100px"
+                }, {
+                    key: "description",
+                    remind: "备注",
+                    text: "描述",
+                    disableMoveRow: !0
+                }, {
+                    key: "operator",
+                    remind: "redis管理员",
                     align: "center",
-                    width: "100px",
-                    text: "作者",
+                    width: "125px",
+                    text: "管理员",
                     disableMoveRow: !0,
                     template: (e, t) => `<a class="plugin-action" href="https://github.com/baukh789" target="_blank" ${t.id} title="去看看${e}的github">${e}</a>`
                 }, {
-                    key: "createDate",
-                    width: "130px",
-                    text: "创建时间",
-                    sorting: "DESC",
-                    align: "left",
-                    template: (e, t) => new Date(e).toLocaleDateString()
+                    key: "work",
+                    text: "启动",
+                    align: "center",
+                    width: "100px"
                 }, {
-                    key: "lastDate", width: "130px", text: "最后修改时间", merge: "text", sorting: "", template: function (e, t) {
-                        return new Date(e).toLocaleDateString()
-                    }
-                }, {key: "priority", text: "优先级", align: "right", width: "100px"}, {
                     key: "action",
                     remind: "the action",
                     width: "100px",
