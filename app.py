@@ -1,4 +1,5 @@
-from flask import Flask, jsonify
+from flask import Flask, make_response
+from flask_cors import cross_origin
 from redsql import db, RedisInfo
 import config
 
@@ -12,7 +13,8 @@ def index():
     return "Hello World!"
 
 
-@app.route('/api')
+@app.route('/api', methods=['POST'])
+@cross_origin()
 def api():
     dataset = RedisInfo.query.all()
     r = []

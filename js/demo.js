@@ -211,7 +211,7 @@ const gridManagerName = "test",
                 },
                 disableCache: !1,
                 ajaxData: function (e, t) {
-                    return document.querySelector('[name="type"]').value = t.type || -1, "https://www.lovejavascript.com/blogManager/getBlogList"
+                    return document.querySelector('[name="type"]').value = t.type || -1, "http://127.0.0.1:5000/api"
                 },
                 exportConfig: {
                     fileName: e => {

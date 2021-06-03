@@ -13,8 +13,8 @@ class RedisInfo(db.Model):
     operator = db.Column(db.NVARCHAR(20), comment="管理员", nullable=True)
     work = db.Column(db.BOOLEAN, comment="启动", nullable=False)
 
-    # def __repr__(self):
-    #     return "Redis: " + self.__tablename__
+    def __repr__(self):
+        return "Redis: " + self.__tablename__
 
     def __init__(self):
         pass
