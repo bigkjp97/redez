@@ -206,17 +206,25 @@
                 text: "状态",
                 align: "center",
                 width: "100px",
-                template: (e, t) => `<span style=" ${t.work}===true?'color:green;':'color:red;'">${t.work}</span>`
+                template: (e, t) => {
+                    if (t.work === true) {
+                        return `<span style="color:green" onclick="console.log('测试连接')">运行中</span>`
+                    } else {
+                        return `<span style="color:red" onclick="console.log('测试连接')">已终止</span>`
+                    }
+                }
             }, {
                 key: "action",
                 remind: "the action",
-                width: "100px",
+                width: "200px",
                 align: "center",
                 fixed: "right",
                 disableMoveRow: !0,
                 disableRowCheck: !0,
                 text: '<span style="color: red">操作</span>',
-                template: (e, t) => `<span class="plugin-action" data-id="${t.id}" onclick="demo1.editRowData(this)">修改</span>`
+                template: (e, t) => `
+<span class="plugin-action" data-id="${t.id}" onclick="demo1.editRowData(this)">查看</span>
+<span class="plugin-action" data-id="${t.id}" onclick="demo1.editRowData(this)">修改</span>`
             }
             ]
         });

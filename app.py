@@ -1,4 +1,4 @@
-from flask import Flask, make_response
+from flask import Flask
 from flask_cors import cross_origin
 from redsql import db, RedisInfo
 import config
