@@ -4,7 +4,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" type="text/css" href="./css/gm.css">
     <script type="text/javascript" src="./js/gm.js"></script>
-    <title>GridManager:点击行单选</title>
+    <script type="text/javascript" src="./js/jquery.js"></script>
+    <title>Redis管理系统</title>
     <style>
         html, body {
             width: 100%;
@@ -157,7 +158,7 @@
             disableLine: true,
             disableHover: true,
             ajaxData: function () {
-                return 'http://127.0.0.1:5000/api';
+                return 'http://47.106.176.7:8010/api';
             },
             ajaxType: 'POST',
 
@@ -205,12 +206,15 @@
                 key: "work",
                 text: "状态",
                 align: "center",
-                width: "100px",
+
                 template: (e, t) => {
+                    var ip = t.ip
+                    var port = t.port
+                    var order = t.gm_order
                     if (t.work === true) {
-                        return `<span style="color:green" onclick="testRowData(this)">运行中</span>`
+                        return `<input id="enter-pass-${order}" style="display: none" type="password" onkeydown="inputRowData(this,'${ip}','${port}','${order}')" /><button id="enter-conn-${order}" style="color:green" onclick="testRowData(this,'${order}')">运行中</button>`
                     } else {
-                        return `<span style="color:red" onclick="console.log('测试连接')">已终止</span>`
+                        return `<input id="enter-pass-${order}" style="display: none" type="password" onkeydown="inputRowData(this,'${ip}','${port}','${order}')" /><button id="enter-conn-${order}" style="color:red" onclick="testRowData(this,'${order}')">已终止</button>`
                     }
                 }
             }, {
@@ -223,7 +227,7 @@
                 disableRowCheck: !0,
                 text: '<span style="color: red">操作</span>',
                 template: (e, t) => `
-<span class="plugin-action" data-id="${t.id}" onclick="demo1.editRowData(this)">查看</span>
+<span class="plugin-action" data-id="${t.id}" onclick="checkRowInfo(this)">查看</span>
 <span class="plugin-action" data-id="${t.id}" onclick="demo1.editRowData(this)">修改</span>`
             }
             ]
@@ -239,18 +243,70 @@
         }
     }
 
+    function checkRowInfo() {
+    }
+
+
+    function inputRowData(val, ip, port, order) {
+        if (event.keyCode === 13) {
+            val.style = 'display:none'
+            var button = document.getElementById('enter-conn-' + order)
+            button.style.display = ''
+            button.innerText = '测试连接'
+            var auth = val.value
+            var params = {
+                'ip': ip,
+                'port': port,
+                'auth': auth
+            }
+            var count = 1
+            var interval = setInterval(() => {
+                button.disabled = true
+                button.style.color = 'gold'
+                button.innerText = "连接中" + count
+                count++
+            }, 1000)
+            let promise = new Promise((resolve, reject) => {
+                resolve(interval)
+            });
+
+            promise.then(() => {
+                $.ajax({
+                    type: "POST",
+                    url: "http://47.106.176.7:8010/api/redis",
+                    data: params,
+                    dataType: "json",
+                    success: (res) => {
+                        clearInterval(interval)
+                        if (res['connection'] === 1) {
+                            button.style.color = 'green'
+                            button.innerText = "连接成功"
+                            setTimeout(() => {
+                                button.innerText = "运行中"
+                                button.disabled = false
+                            }, 2000)
+                        } else if (count <= 5) {
+                            button.style.color = 'red'
+                            button.innerText = "密码错误"
+                            button.disabled = false
+                        } else {
+                            button.style.color = 'red'
+                            button.innerText = "连接超时"
+                            setTimeout(() => {
+                                button.innerText = "已终止"
+                                button.disabled = false
+                            }, 2000)
+                        }
+                    }
+                })
+            })
+        }
+    }
 
     // 测试状态，变成计时器
-    function testRowData(val) {
-        var count = 0
-        var interval = setInterval(() => {
-            val.innerText = "连接中" + count
-            count++
-            if (count > 10) {
-                clearInterval(interval)
-            }
-        }, 1000)
-
+    function testRowData(val, order) {
+        val.style = 'display: none'
+        document.getElementById('enter-pass-' + order).style.display = 'block'
     }
 
     // setTimeout(() => testRowData(val), 1000)

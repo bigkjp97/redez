@@ -1,0 +1,7 @@
+Flask
+Flask-Cors
+redis
+Flask-SQLAlchemy
+# yum install python3-devel mysql-devel
+mysqlclient
+Flask-MySQLdb
